@@ -6,7 +6,7 @@
 /*   By: lalex <lalex@students.21-school.ru>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 10:31:51 by lalex             #+#    #+#             */
-/*   Updated: 2022/03/23 23:07:39 by lalex            ###   ########.fr       */
+/*   Updated: 2022/03/26 18:29:58 by lalex            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include <errno.h>
 #include "pipex.h"
 #include <sys/wait.h>
-#include "ft_lst.h"
 
 extern char	**environ;
 
