@@ -6,7 +6,7 @@
 /*   By: lalex <lalex@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/26 21:32:18 by lalex             #+#    #+#             */
-/*   Updated: 2022/03/26 21:33:57 by lalex            ###   ########.fr       */
+/*   Updated: 2022/03/26 22:55:37 by lalex            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <sys/wait.h>
 #include "pipex.h"
 
-static int  fork_error(int fds[2])
+static int	fork_error(int fds[2])
 {
 	printf_err(FORK_CREATION_ERROR, strerror(errno));
 	close_pipe(fds);
@@ -34,7 +34,7 @@ pid_t	execute_middle(int fds[2], const char *command)
 	}
 	child = fork();
 	if (child == -1)
-        return (fork_error(fds));
+		return (fork_error(fds));
 	else if (child == 0)
 	{
 		close(pipe_fds[0]);
