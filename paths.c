@@ -3,42 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   paths.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalex <lalex@students.21-school.ru>        +#+  +:+       +#+        */
+/*   By: lalex <lalex@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 10:32:03 by lalex             #+#    #+#             */
-/*   Updated: 2022/03/04 10:32:20 by lalex            ###   ########.fr       */
+/*   Updated: 2022/03/26 21:19:27 by lalex            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	**get_paths(char **envp)
+static char	**get_paths(char **envp)
 {
 	int		i;
 	char	**paths;
 
+	if (!envp)
+		return (NULL);
 	i = 0;
-	while (envp[i] && starts_with(envp[i], "PATH=") == 0)
+	while (envp[i] && ft_strncmp(envp[i], "PATH=", sizeof("PATH=") - 1))
 		i++;
 	if (envp[i] == NULL)
 		return (NULL);
-	paths = ft_split(envp[i] + ft_strlen("PATH="), ':');
+	paths = ft_split(envp[i] + sizeof("PATH=") - 1, ':');
 	return (paths);
 }
 
 char	**env_path(char **envp, int command)
 {
 	static char	**env_path;
+	static char	**env;
 
 	if (command == PATH_INIT)
+	{
+		env = envp;
 		env_path = get_paths(envp);
+	}
 	else if (command == PATH_READ)
 		return (env_path);
 	else if (command == PATH_CLEAN)
 	{
 		clean_strings(env_path);
 		env_path = NULL;
+		env = NULL;
 	}
+	else if (command == ENV_READ)
+		return (env);
 	return (env_path);
 }
 

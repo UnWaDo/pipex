@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalex <lalex@students.21-school.ru>        +#+  +:+       +#+        */
+/*   By: lalex <lalex@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 15:07:41 by lalex             #+#    #+#             */
-/*   Updated: 2022/03/23 22:45:07 by lalex            ###   ########.fr       */
+/*   Updated: 2022/03/26 21:32:37 by lalex            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,15 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*path_join(const char *dir, const char *file);
 int		printf_err(const char *s, ...);
 char	**env_path(char **envp, int command);
-char	**get_paths(char **envp);
 char	**parse_command(const char *command);
+int		execute_cmd(int in_fd, int out_fd, const char *command);
+pid_t	execute_middle(int fds[2], const char *command);
 int		execute_commands(int fds[2], char **commands, int cmdc);
 
-t_child *create_child(int in_fd, int out_fd, char *cmd);
-int		execute_child(t_child *child);
-int		destroy_child(t_child *child);
-int		wait_child(t_child *child);
-
 # define HERE_DOC	"here_doc"
+# define HERE_DOC_T	"> "
+
+int		here_doc(char *limiter);
 
 # define BAD_USAGE_ERROR		"Bad usage\nTry '%s file1 cmd1 cmd2 file2'\n"
 # define INPUT_FILE_ERROR		"Invalid input file %s: %s\n"
@@ -63,6 +62,7 @@ int		wait_child(t_child *child);
 # define PATH_INIT	0b0
 # define PATH_READ	0b1
 # define PATH_CLEAN	0b10
+# define ENV_READ	0b100
 
 # define FD_CHANGE_ERROR	0b1
 # define FORK_ERROR			0b10

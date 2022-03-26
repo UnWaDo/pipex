@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalex <lalex@students.21-school.ru>        +#+  +:+       +#+        */
+/*   By: lalex <lalex@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/09 13:41:01 by lalex             #+#    #+#             */
-/*   Updated: 2022/03/02 15:48:03 by lalex            ###   ########.fr       */
+/*   Updated: 2022/03/26 21:08:30 by lalex            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ char	**ft_split(char const *s, char c)
 	char	**splitted;
 	size_t	shift;
 
+	if (!s)
+		return (NULL);
 	len = count_strings(s, c);
 	splitted = malloc((len + 1) * sizeof (*splitted));
 	if (splitted == NULL)

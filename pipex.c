@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lalex <lalex@students.21-school.ru>        +#+  +:+       +#+        */
+/*   By: lalex <lalex@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/04 10:26:41 by lalex             #+#    #+#             */
-/*   Updated: 2022/03/23 23:26:53 by lalex            ###   ########.fr       */
+/*   Created: 2022/03/26 21:20:03 by lalex             #+#    #+#             */
+/*   Updated: 2022/03/26 21:20:04 by lalex            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@
 
 static void	check_args(int argc, char **argv)
 {
-	if (argc >= 5)
+	if (argc >= 6)
+		return ;
+	if (argc >= 5 && ft_strncmp(argv[1], HERE_DOC, sizeof(HERE_DOC)))
 		return ;
 	printf_err(BAD_USAGE_ERROR, argv[0]);
 	exit(EXIT_FAILURE);
@@ -32,50 +34,12 @@ static int	check_file(const char *filename, int flags, int code)
 	int	fd;
 
 	fd = open(filename, flags, code);
-	if (fd < 0
-		|| ((flags & (O_RDONLY | O_RDWR)) && read(fd, NULL, 0) < 0)
-		|| ((flags & (O_WRONLY | O_RDWR)) && write(fd, NULL, 0) < 0))
-		printf_err(FILE_ERROR, filename, strerror(errno));
+	if (fd < 0)
+		printf_err(FILE_ERROR, strerror(errno), filename);
 	return (fd);
 }
 
-static int	is_limiter(char *limiter, char *line)
-{
-	size_t	i;
-
-	i = 0;
-	while (limiter[i] && line[i] && line[i] == limiter[i])
-		i++;
-	return (limiter[i] == '\0' && line[i] == '\n' && line[i + 1] == '\0');
-}
-
-static int	here_doc(char *limiter)
-{
-	int		pipe_fds[2];
-	char	*line;
-	size_t	line_len;
-
-	if (pipe(pipe_fds) == -1)
-	{
-		printf_err(PIPE_CREATION_ERROR, strerror(errno));
-		return (-1);
-	}
-	line = get_next_line(0);
-	line_len = ft_strlen(line);
-	while (line && !is_limiter(limiter, line))
-	{
-		write(pipe_fds[1], line, line_len);
-		free(line);
-		line = get_next_line(0);
-		line_len = ft_strlen(line);
-	}
-	if (line)
-		free(line);
-	close(pipe_fds[1]);
-	return (pipe_fds[0]);
-}
-
-static int	check_files(int argc, char **argv, int fds[2])
+static int	input_files(int argc, char **argv, int fds[2])
 {
 	if (ft_strncmp(argv[1], HERE_DOC, sizeof(HERE_DOC)) == 0)
 	{
@@ -96,7 +60,7 @@ int	main(int argc, char **argv, char **envp)
 	int	io_fds[2];
 
 	check_args(argc, argv);
-	check_files(argc, argv, io_fds);
+	input_files(argc, argv, io_fds);
 	env_path(envp, PATH_INIT);
 	if (ft_strncmp(argv[1], HERE_DOC, sizeof(HERE_DOC)) == 0)
 		status = execute_commands(io_fds, argv + 3, argc - 4);
