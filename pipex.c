@@ -6,7 +6,7 @@
 /*   By: lalex <lalex@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/26 21:20:03 by lalex             #+#    #+#             */
-/*   Updated: 2022/03/26 21:20:04 by lalex            ###   ########.fr       */
+/*   Updated: 2022/03/26 21:53:11 by lalex            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	input_files(int argc, char **argv, int fds[2])
 	if (ft_strncmp(argv[1], HERE_DOC, sizeof(HERE_DOC)) == 0)
 	{
 		fds[0] = here_doc(argv[2]);
-		fds[1] = check_file(argv[argc - 1], O_WRONLY | O_CREAT, 0644);
+		fds[1] = check_file(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
 	}
 	else
 	{
