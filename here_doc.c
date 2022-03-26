@@ -13,7 +13,7 @@
 #include "pipex.h"
 #include "get_next_line.h"
 #include <errno.h>
-#include <strings.h>
+#include <string.h>
 
 static int	is_limiter(char *limiter, char *line)
 {
